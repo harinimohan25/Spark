@@ -12,10 +12,9 @@ def parseLine(line):
 
 lines = sc.textFile("file:///C:/Users/harin/OneDrive/Documents/GitHub/Spark/1800.csv")
 parsedLines = lines.map(parseLine)
-minTemps = parsedLines.filter(lambda x: "TMIN" in x[1])
-stationTemps = minTemps.map(lambda x: (x[0], x[2]))
-print stationTemps.schema
-minTemps = stationTemps.reduceByKey(lambda x, y: min(x,y))
+minTemps = parsedLines.filter(lambda x: "TMAX" in x[1]) # Taking only the TMIN in the entry type column
+stationTemps = minTemps.map(lambda x: (x[0], x[2])) 
+minTemps = stationTemps.reduceByKey(lambda x, y: max(x,y))
 results = minTemps.collect();
 
 for result in results:
